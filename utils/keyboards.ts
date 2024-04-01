@@ -22,6 +22,4 @@ function chooseAnime(results: MangaSearchResult[]) {
   return group;
 }
 
-function listChapters() {}
-
 export { chooseAnime, chooseKeyboard };
