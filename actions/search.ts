@@ -1,10 +1,10 @@
 import { MyConversation } from "../config/bot.ts";
 import { MyContext } from "../config/bot.ts";
 import { bot } from "../config/bot.ts";
-import { createConversation, InlineKeyboard } from "../deps.ts";
+import { createConversation } from "../deps.ts";
 import { getMangaInfo } from "../utils/api.ts";
 import { getMangaChapter, searchManga } from "../utils/api.ts";
-import { chooseKeyboard } from "../utils/keyboards.ts";
+import { chapterSelectionKeyboard, chooseKeyboard } from "../utils/keyboards.ts";
 
 async function searchingMangaConversation(
   conversation: MyConversation,
@@ -29,21 +29,16 @@ bot.callbackQuery(/manga-.+/g, async (ctx) => {
   const id = ctx.callbackQuery!.data;
   const manga = await getMangaInfo(id!);
 
-  const keyboard = new InlineKeyboard();
-
-  for (const chapter of manga.chapters) {
-    keyboard.text(
-      chapter.title,
-      chapter.id + "-" + id.split("-").slice(-1)[0],
-    ).row();
-  }
+  const keyboard = chapterSelectionKeyboard(manga);
 
   await ctx.deleteMessages([
     ctx.callbackQuery!.message!.message_id,
     ctx.callbackQuery!.message!.message_id - 1,
   ]);
 
-  const description = manga.description.length > 768 ? `${manga.description.substring(0, 768)}...` : manga.description;
+  const description = manga.description.length > 768
+    ? `${manga.description.substring(0, 768)}...`
+    : manga.description;
 
   const result = `${manga.title}\n${description}\n`;
   await ctx.replyWithPhoto(manga.thumbnail, {
