@@ -43,7 +43,9 @@ bot.callbackQuery(/manga-.+/g, async (ctx) => {
     ctx.callbackQuery!.message!.message_id - 1,
   ]);
 
-  const result = `${manga.title}\n${manga.description}\n`;
+  const description = manga.description.length > 768 ? `${manga.description.substring(0, 768)}...` : manga.description;
+
+  const result = `${manga.title}\n${description}\n`;
   await ctx.replyWithPhoto(manga.thumbnail, {
     caption: result,
     reply_markup: keyboard,
@@ -63,4 +65,6 @@ bot.callbackQuery(/chapter-.+/g, async (ctx) => {
   for (const pic of manga_pics) {
     await ctx.replyWithMediaGroup(pic);
   }
+
+  await ctx.answerCallbackQuery();
 });
