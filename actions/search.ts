@@ -1,18 +1,28 @@
+import { MyConversation } from "../config/bot.ts";
+import { MyContext } from "../config/bot.ts";
 import { bot } from "../config/bot.ts";
-import { InlineKeyboard } from "../deps.ts";
+import { createConversation, InlineKeyboard } from "../deps.ts";
 import { getMangaInfo } from "../utils/api.ts";
 import { getMangaChapter, searchManga } from "../utils/api.ts";
-import { chooseAnime, chooseKeyboard } from "../utils/keyboards.ts";
+import { chooseKeyboard } from "../utils/keyboards.ts";
 
-bot.command("search", async (ctx) => {
-  const name = ctx.message!.text.split("search")[1].trim();
+async function searchingMangaConversation(
+  conversation: MyConversation,
+  ctx: MyContext,
+) {
+  await ctx.reply("Send your manga name");
+  const { message } = await conversation.wait();
 
-  const mangaResults = await searchManga(name);
-  const group = chooseAnime(mangaResults);
+  const mangaResults = await searchManga(message!.text!);
   const keyboard = chooseKeyboard(mangaResults);
 
-  await ctx.replyWithMediaGroup(group);
   await ctx.reply("Choose a manga.", { reply_markup: keyboard });
+}
+
+bot.use(createConversation(searchingMangaConversation));
+
+bot.command("search", async (ctx) => {
+  await ctx.conversation.enter("searchingMangaConversation");
 });
 
 bot.callbackQuery(/manga-.+/g, async (ctx) => {
