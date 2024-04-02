@@ -1,7 +1,7 @@
 import { InlineKeyboard, InputMediaBuilder, InputMediaPhoto } from "../deps.ts";
 import { MangaSearchResult } from "../types.ts";
 
-function chooseKeyboard(results: MangaSearchResult[]) {
+export function chooseKeyboard(results: MangaSearchResult[]) {
   const keyboard = new InlineKeyboard();
   for (const result of results) {
     keyboard.text(result.name, result.id).row();
@@ -9,7 +9,7 @@ function chooseKeyboard(results: MangaSearchResult[]) {
   return keyboard;
 }
 
-function chooseAnime(results: MangaSearchResult[]) {
+export function chooseAnime(results: MangaSearchResult[]) {
   const group: InputMediaPhoto[] = [];
 
   for (const result of results) {
@@ -21,5 +21,3 @@ function chooseAnime(results: MangaSearchResult[]) {
   }
   return group;
 }
-
-export { chooseAnime, chooseKeyboard };

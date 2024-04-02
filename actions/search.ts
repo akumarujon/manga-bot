@@ -1,7 +1,7 @@
 import { bot } from "../config/bot.ts";
 import { InlineKeyboard } from "../deps.ts";
-import { getMangaInfo, mangaChapters } from "../utils/api.ts";
-import { find_manga, searchManga } from "../utils/api.ts";
+import { getMangaInfo } from "../utils/api.ts";
+import { getMangaChapter, searchManga } from "../utils/api.ts";
 import { chooseAnime, chooseKeyboard } from "../utils/keyboards.ts";
 
 bot.command("search", async (ctx) => {
@@ -19,10 +19,9 @@ bot.callbackQuery(/manga-.+/g, async (ctx) => {
   const id = ctx.callbackQuery!.data;
   const manga = await getMangaInfo(id!);
 
-  const chapters = await mangaChapters(id!);
   const keyboard = new InlineKeyboard();
 
-  for (const chapter of chapters) {
+  for (const chapter of manga.chapters) {
     keyboard.text(
       chapter.title,
       chapter.id + "-" + id.split("-").slice(-1)[0],
@@ -49,7 +48,7 @@ bot.callbackQuery(/chapter-.+/g, async (ctx) => {
 
   id = id.split("-" + id.split("-").slice(-1)[0])[0];
 
-  const manga_pics = await find_manga(manga_id, id.split(manga_id)[0]);
+  const manga_pics = await getMangaChapter(manga_id, id.split(manga_id)[0]);
 
   for (const pic of manga_pics) {
     await ctx.replyWithMediaGroup(pic);

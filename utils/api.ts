@@ -1,32 +1,19 @@
 import { InputMediaPhoto } from "../deps.ts";
 import { InputMediaBuilder } from "../deps.ts";
-import { Chapter } from "../types.ts";
 import { MangaSearchResult, Page } from "../types.ts";
 import { Manga } from "../types.ts";
 
-async function searchManga(name: string): Promise<MangaSearchResult[]> {
-  const response: MangaSearchResult[] =
-    await (await fetch(`https://manga.deno.dev/api/search?q=${name}`)).json();
-  return response;
+export async function searchManga(name: string): Promise<MangaSearchResult[]> {
+  const res = await fetch(`https://manga.deno.dev/api/search?q=${name}`);
+  return await res.json();
 }
 
-async function getMangaInfo(
-  id: string,
-): Promise<Manga> {
-  const response: Manga =
-    await (await fetch(`https://manga.deno.dev/api/manga?id=${id}`)).json();
-  return response;
+export async function getMangaInfo(id: string): Promise<Manga> {
+  const res = await fetch(`https://manga.deno.dev/api/manga?id=${id}`);
+  return await res.json();
 }
 
-async function mangaChapters(
-  id: string,
-): Promise<Chapter[]> {
-  const response: Manga =
-    await (await fetch(`https://manga.deno.dev/api/manga?id=${id}`)).json();
-  return response.chapters;
-}
-
-async function find_manga(
+export async function getMangaChapter(
   id: string,
   chapter: string,
 ): Promise<InputMediaPhoto[][]> {
@@ -38,14 +25,12 @@ async function find_manga(
   const mangaArrays: InputMediaPhoto[][] = [];
 
   for (let i = 0; i < mangaPages.length; i += maxElements) {
-    const slicedArray = mangaPages.slice(i, i + maxElements).map((page) => {
-      return InputMediaBuilder
-        .photo("https://manga-proxy.deno.dev/?q=" + page.url);
-    });
+    const slicedArray = mangaPages
+      .slice(i, i + maxElements)
+      .map((page) => InputMediaBuilder.photo(page.proxyURL));
+
     mangaArrays.push(slicedArray);
   }
 
   return mangaArrays;
 }
-
-export { find_manga, getMangaInfo, mangaChapters, searchManga };
