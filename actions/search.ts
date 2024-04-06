@@ -4,7 +4,10 @@ import { bot } from "../config/bot.ts";
 import { createConversation } from "../deps.ts";
 import { getMangaInfo } from "../utils/api.ts";
 import { getMangaChapter, searchManga } from "../utils/api.ts";
-import { chapterSelectionKeyboard, chooseKeyboard } from "../utils/keyboards.ts";
+import {
+  chapterSelectionKeyboard,
+  chooseKeyboard,
+} from "../utils/keyboards.ts";
 
 async function searchingMangaConversation(
   conversation: MyConversation,

@@ -32,4 +32,3 @@ export function chapterSelectionKeyboard(manga: Manga) {
 
   return keyboard;
 }
-
