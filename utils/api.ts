@@ -27,7 +27,7 @@ async function mangaChapters(
   const response: Response = await fetch(
     `https://manga.deno.dev/api/manga?id=${id}`,
   );
-  const manga = await response.json();
+  const manga: Manga = await response.json();
   return manga.chapters;
 }
 
