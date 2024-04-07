@@ -5,25 +5,30 @@ import { MangaSearchResult, Page } from "../types.ts";
 import { Manga } from "../types.ts";
 
 async function searchManga(name: string): Promise<MangaSearchResult[]> {
-  const response: MangaSearchResult[] =
-    await (await fetch(`https://manga.deno.dev/api/search?q=${name}`)).json();
-  return response;
+  const response: Response = await fetch(
+    `https://manga.deno.dev/api/search?q=${name}`,
+  );
+  return response.json();
 }
 
 async function getMangaInfo(
   id: string,
 ): Promise<Manga> {
-  const response: Manga =
-    await (await fetch(`https://manga.deno.dev/api/manga?id=${id}`)).json();
-  return response;
+  const response: Response = await fetch(
+    `https://manga.deno.dev/api/manga?id=${id}`,
+  );
+
+  return response.json();
 }
 
 async function mangaChapters(
   id: string,
 ): Promise<Chapter[]> {
-  const response: Manga =
-    await (await fetch(`https://manga.deno.dev/api/manga?id=${id}`)).json();
-  return response.chapters;
+  const response: Response = await fetch(
+    `https://manga.deno.dev/api/manga?id=${id}`,
+  );
+  const manga = await response.json();
+  return manga.chapters;
 }
 
 async function find_manga(
