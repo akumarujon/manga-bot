@@ -35,7 +35,6 @@ async function getMangaChapter(
   id: string,
   chapter: string,
 ): Promise<InputMediaPhoto[][]> {
-  console.log("FROM API", id, chapter);
   const mangaPages: Page[] = await (await fetch(
     `https://manga.deno.dev/api/chapter?id=${id}&chapter=${chapter}`,
   )).json();

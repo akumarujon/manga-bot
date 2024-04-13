@@ -43,8 +43,7 @@ bot.command("search", async (ctx) => {
 bot.callbackQuery(/manga-.+/g, async (ctx) => {
   // example id: manga-001
   const id = ctx.callbackQuery!.data;
-  console.log("Trigger: " , id);
-  
+
   const manga = await getMangaInfo(id!);
 
   const keyboard = chapterSelectionKeyboard(manga);
@@ -80,21 +79,22 @@ bot.callbackQuery(/chapter-.+/g, async (ctx) => {
   const keyboard = chapterSelectionKeyboard(manga);
 
   // plan fix
-  const pagination = createPagination(keyboard.inline_keyboard.slice(0,-1).reverse(), id, id.split("-").slice(-1)[0]);
+  const pagination = createPagination(
+    keyboard.inline_keyboard.slice(0, -1).reverse(),
+    id,
+    id.split("-").slice(-1)[0],
+  );
 
-  console.log("Before: ", id);
   id = id.split("-" + id.split("-").slice(-1)[0])[0];
 
-  console.log("Data: ", id);
-  console.log("Manga id:", manga_id);
   const manga_pics = await getMangaChapter(manga_id, id);
 
   for (const pic of manga_pics) {
     await ctx.replyWithMediaGroup(pic);
   }
 
-  await ctx.reply("End",{
-    reply_markup: pagination
+  await ctx.reply(`Manga: ${manga.title}\nChapter: ${id}`, {
+    reply_markup: pagination,
   });
 
   await ctx.answerCallbackQuery();
