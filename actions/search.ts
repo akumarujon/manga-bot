@@ -75,7 +75,7 @@ bot.callbackQuery(/chapter-.+/g, async (ctx) => {
   const manga_id = "manga-" + id.split("-").slice(-1)[0];
   // example manga id: manga-pd992912
 
-  const manga = await getMangaInfo(manga_id);
+	const manga = await getMangaInfo(manga_id);
   const keyboard = chapterSelectionKeyboard(manga);
 
   // plan fix
