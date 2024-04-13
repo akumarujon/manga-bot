@@ -22,6 +22,11 @@ bot.use(session({
 }));
 bot.use(conversations());
 
+bot.api.setMyCommands([
+  { command: "start", description: "Start the bot" },
+  { command: "search", description: "Search for manga" },
+]);
+
 bot.catch((err) => console.error(err));
 
 export { bot, instance };

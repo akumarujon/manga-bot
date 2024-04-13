@@ -31,7 +31,7 @@ async function mangaChapters(
   return manga.chapters;
 }
 
-async function find_manga(
+async function getMangaChapter(
   id: string,
   chapter: string,
 ): Promise<InputMediaPhoto[][]> {
@@ -53,4 +53,4 @@ async function find_manga(
   return mangaArrays;
 }
 
-export { find_manga, getMangaInfo, mangaChapters, searchManga };
+export { getMangaChapter, getMangaInfo, mangaChapters, searchManga };
