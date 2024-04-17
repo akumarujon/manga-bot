@@ -86,8 +86,7 @@ export function createPagination(
       `${
         // @ts-ignore types have problems
         keyboard[currentIndex + 1][0].callback_data.split("-").slice(0, -1)
-          .join("-")
-      }-${manga_id}`,
+          .join("-")}-${manga_id}`,
     );
     return pagination;
   }
@@ -98,8 +97,7 @@ export function createPagination(
       `${
         // @ts-ignore types have problems
         keyboard[currentIndex - 1][0].callback_data.split("-").slice(0, -1)
-          .join("-")
-      }-${manga_id}`,
+          .join("-")}-${manga_id}`,
     );
     return pagination;
   }
@@ -111,16 +109,14 @@ export function createPagination(
       `${
         // @ts-ignore types have problems
         keyboard[currentIndex - 1][0].callback_data.split("-").slice(0, -1)
-          .join("-")
-      }-${manga_id}`,
+          .join("-")}-${manga_id}`,
     )
     .text(
       "➡️",
       `${
         // @ts-ignore types have problems
         keyboard[currentIndex + 1][0].callback_data.split("-").slice(0, -1)
-          .join("-")
-      }-${manga_id}`,
+          .join("-")}-${manga_id}`,
     )
     .row();
 

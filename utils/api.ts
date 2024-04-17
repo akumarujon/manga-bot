@@ -1,4 +1,5 @@
-import { InputMediaPhoto } from "../deps.ts";
+import { InputFile } from "https://deno.land/x/grammy@v1.21.1/types.deno.ts";
+import { InputMediaDocument, InputMediaPhoto } from "../deps.ts";
 import { InputMediaBuilder } from "../deps.ts";
 import { Chapter } from "../types.ts";
 import { MangaSearchResult, Page } from "../types.ts";
@@ -34,18 +35,23 @@ async function mangaChapters(
 async function getMangaChapter(
   id: string,
   chapter: string,
-): Promise<InputMediaPhoto[][]> {
+): Promise<InputMediaDocument[][]> {
   const mangaPages: Page[] = await (await fetch(
     `https://manga.deno.dev/api/chapter?id=${id}&chapter=${chapter}`,
   )).json();
 
   const maxElements = 10;
-  const mangaArrays: InputMediaPhoto[][] = [];
+  const mangaArrays: InputMediaDocument[][] = [];
 
   for (let i = 0; i < mangaPages.length; i += maxElements) {
     const slicedArray = mangaPages.slice(i, i + maxElements).map((page) => {
       return InputMediaBuilder
-        .photo("https://manga-proxy.deno.dev/?q=" + page.url);
+        .document(
+          new InputFile(
+            new URL("https://manga-proxy.deno.dev/?q=" + page.url),
+            `${chapter}.jpeg`,
+          ),
+        );
     });
     mangaArrays.push(slicedArray);
   }
