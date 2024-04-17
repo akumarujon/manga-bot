@@ -1,5 +1,5 @@
 import { InputFile } from "https://deno.land/x/grammy@v1.21.1/types.deno.ts";
-import { InputMediaDocument, InputMediaPhoto } from "../deps.ts";
+import { InputMediaDocument } from "../deps.ts";
 import { InputMediaBuilder } from "../deps.ts";
 import { Chapter } from "../types.ts";
 import { MangaSearchResult, Page } from "../types.ts";
