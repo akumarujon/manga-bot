@@ -5,13 +5,21 @@ import { Chapter } from "../types.ts";
 import { MangaSearchResult, Page } from "../types.ts";
 import { Manga } from "../types.ts";
 
-async function searchManga(name: string): Promise<MangaSearchResult[]> {
+/**
+ * Search for manga
+ * @param query to search manga by
+ */
+async function searchManga(query: string): Promise<MangaSearchResult[]> {
   const response: Response = await fetch(
-    `https://manga.deno.dev/api/search?q=${name}`,
+    `https://manga.deno.dev/api/search?q=${query}`,
   );
   return response.json();
 }
 
+/**
+ * Get info about manga
+ * @param id manga to fetch
+ */
 async function getMangaInfo(
   id: string,
 ): Promise<Manga> {
@@ -22,6 +30,11 @@ async function getMangaInfo(
   return response.json();
 }
 
+/**
+ * Get chapters of manga
+ * @param id manga to fetch
+ * @deprecated Use field chapters on manga instead. You can fetch manga using getMangaInfo
+ */
 async function mangaChapters(
   id: string,
 ): Promise<Chapter[]> {
@@ -32,12 +45,17 @@ async function mangaChapters(
   return manga.chapters;
 }
 
+/**
+ * Get pages of manga's chapter
+ * @param mangaId manga to fetch
+ * @param chapterId chapter to fetch
+ */
 async function getMangaChapter(
-  id: string,
-  chapter: string,
+  mangaId: string,
+  chapterId: string,
 ): Promise<InputMediaDocument[][]> {
   const mangaPages: Page[] = await (await fetch(
-    `https://manga.deno.dev/api/chapter?id=${id}&chapter=${chapter}`,
+    `https://manga.deno.dev/api/chapter?id=${mangaId}&chapter=${chapterId}`,
   )).json();
 
   const maxElements = 10;
@@ -49,7 +67,7 @@ async function getMangaChapter(
         .document(
           new InputFile(
             new URL("https://manga-proxy.deno.dev/?q=" + page.url),
-            `${chapter}.jpeg`,
+            `${chapterId}.jpeg`,
           ),
         );
     });
