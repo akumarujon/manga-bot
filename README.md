@@ -18,7 +18,7 @@ A Telegram bot built using Grammy and Deno. This bot interacts with a Manga API 
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/manga-bot.git
+git clone https://github.com/akumarujon/manga-bot
 cd manga-bot
 ```
 
